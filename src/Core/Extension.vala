@@ -12,21 +12,14 @@ public class Extension : Object {
     public ExtensionType extension_type { get; construct; }
     public Pk.Package package { get; construct; }
 
-    public Extension (Pk.Package package) {
+    public Extension (Pk.Package package, ExtensionType extension_type) {
         Object (
             package: package,
             name: package.get_name (),
             summary: package.summary,
+            description: package.description,
             installed: (package.info == INSTALLED),
-            extension_type: ExtensionType.SWITCHBOARD
-        );
-    }
-
-    public Extension.from_component (AppStream.Component component) {
-        Object (
-            name: component.name,
-            summary: component.summary,
-            extension_type: ExtensionType.SWITCHBOARD
+            extension_type: extension_type
         );
     }
 
