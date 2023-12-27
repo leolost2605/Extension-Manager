@@ -6,15 +6,15 @@ public class Window : Gtk.ApplicationWindow {
             application: app,
             default_height:300,
             default_width: 300,
-            title: "MyApp"
+            title: "Extension Manager"
         );
     }
 
     construct {
+        var extension_manager = ExtensionManager.get_default ();
+
         var header_bar = new Gtk.HeaderBar ();
         header_bar.add_css_class (Granite.STYLE_CLASS_FLAT);
-
-        var extension_manager = ExtensionManager.get_default ();
 
         var gala_row = new ExtensionTypeRow (GALA);
         var wingpanel_row = new ExtensionTypeRow (WINGPANEL);
@@ -81,8 +81,17 @@ public class Window : Gtk.ApplicationWindow {
             margin_end = 12
         };
 
+        var overlay = new Gtk.Overlay () {
+            child = frame
+        };
+
+        var overlay_bar = new Granite.OverlayBar (overlay) {
+            active = true,
+            visible = false
+        };
+
         titlebar = header_bar;
-        child = frame;
+        child = overlay;
 
         type_list_box.row_activated.connect ((row) => {
             current_type = ((ExtensionTypeRow)row).extension_type;
@@ -100,5 +109,17 @@ public class Window : Gtk.ApplicationWindow {
         back_button.clicked.connect (() => leaflet.navigate (BACK));
 
         extension_page.back.connect (() => leaflet.navigate (BACK));
+
+        extension_manager.progress.connect ((label) => {
+            if (label == null) {
+                overlay_bar.visible = false;
+                return;
+            }
+
+            overlay_bar.visible = true;
+            overlay_bar.label = label;
+        });
+
+        extension_manager.load_extensions.begin ();
     }
 }
