@@ -18,7 +18,7 @@ public class Extension : Object {
             name: package.get_name (),
             summary: package.summary,
             description: package.description,
-            installed: (package.info == INSTALLED),
+            installed: INSTALLED in package.info,
             extension_type: extension_type
         );
     }
