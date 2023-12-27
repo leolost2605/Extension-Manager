@@ -10,7 +10,7 @@ public class Extension : Object {
     public string description { get; construct; }
     public bool installed { get; construct set; }
     public ExtensionType extension_type { get; construct; }
-    public Pk.Package package { get; construct; }
+    public Pk.Package package { get; construct set; }
 
     public Extension (Pk.Package package, ExtensionType extension_type) {
         Object (
@@ -23,12 +23,57 @@ public class Extension : Object {
         );
     }
 
-    public async void install () {
-        //TODO
+    public void toggle_install (Pk.ProgressCallback callback) {
+        if (installed) {
+            uninstall.begin (callback);
+        } else {
+            install.begin (callback);
+        }
     }
 
-    public async void uninstall () {
-        //TODO
+    public async void install (Pk.ProgressCallback callback) {
+        var client = new Pk.Client ();
+
+        try {
+            yield client.install_packages_async (Pk.TransactionFlag.NONE, { package.package_id }, null, callback);
+
+            yield reload_package ();
+        } catch (Error e) {
+            warning ("Failed to install %s: %s", package.package_id, e.message);
+        }
+    }
+
+    public async void uninstall (Pk.ProgressCallback callback) {
+        var client = new Pk.Client ();
+
+        try {
+            yield client.remove_packages_async (Pk.TransactionFlag.NONE, { package.package_id }, true, true, null, callback);
+
+            yield reload_package ();
+        } catch (Error e) {
+            warning ("Failed to uninstall %s: %s", package.package_id, e.message);
+        }
+    }
+
+    private async void reload_package () {
+        var client = new Pk.Client ();
+
+        try {
+            var result = yield client.search_names_async (Pk.Filter.NONE, { name }, null, () => {});
+
+            if (result.get_package_array ().length == 0) {
+                critical ("Couldn't refresh package %s: Package not found", name);
+            }
+
+            foreach (var package in result.get_package_array ()) {
+                if (package.get_name () == name) {
+                    this.package = package;
+                    installed = INSTALLED in package.info;
+                }
+            }
+        } catch (Error e) {
+            warning ("Failed to refresh package: %s", e.message);
+        }
     }
 
     public static string type_enum_to_label (ExtensionType extension_type) {
