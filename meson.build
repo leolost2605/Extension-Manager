@@ -21,6 +21,7 @@ executable(
         dependency('gtk4'),
         dependency('packagekit-glib2'),
         dependency('libadwaita-1'),
+        dependency('appstream'),
         dependency('granite-7')
     ],
     install: true

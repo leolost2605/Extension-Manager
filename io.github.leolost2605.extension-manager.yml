@@ -22,8 +22,7 @@ finish-args:
   - '--socket=wayland'
   - '--system-talk-name=org.freedesktop.PackageKit'
   - '--system-talk-name=org.freedesktop.Accounts'
-  - '--filesystem=home:ro'
-  - '--filesystem=/etc:ro'
+  - '--filesystem=/var/lib'
 
 # This section is where you list all the source code required to build your app.
 # If we had external dependencies that weren't included in our SDK, we would list
@@ -40,6 +39,36 @@ modules:
       - -Dsystemd=false
       - -Doffline_update=false
       - -Dbash_completion=false
+  
+  - name: libyaml
+    buildsystem: autotools
+    sources:
+      - type: archive
+        url: https://github.com/yaml/libyaml/archive/refs/tags/0.2.5.tar.gz
+        sha256: fa240dbf262be053f3898006d502d514936c818e422afdcf33921c63bed9bf2e
+  
+  - name: libxmlb
+    buildsystem: meson
+    config-opts:
+      - -Dintrospection=false
+      - -Dstemmer=false
+      - -Dgtkdoc=false
+    sources:
+      - type: archive
+        url: https://github.com/hughsie/libxmlb/archive/refs/tags/0.3.14.tar.gz
+        sha256: 92bea792c6a33d243e7b6f210519bd6ba71b010463fbec1b5a71ddd35736ec20
+
+  - name: appstream
+    buildsystem: meson
+    sources:
+      - type: archive
+        url: https://github.com/ximion/appstream/archive/refs/tags/v1.0.1.tar.gz
+        sha256: 3a6877c887627aed515e9802f63ac7bd83fffab4c2cad33c809c692c4bd8da48
+    config-opts:
+      - -Dapt-support=true
+      - -Dvapi=true
+      - -Dstemming=false
+      - -Dapidocs=false
 
   - name: io.github.leolost2605.extension-manager
     buildsystem: meson

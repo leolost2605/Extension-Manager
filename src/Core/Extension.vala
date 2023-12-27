@@ -22,6 +22,14 @@ public class Extension : Object {
         );
     }
 
+    public Extension.from_component (AppStream.Component component) {
+        Object (
+            name: component.name,
+            summary: component.summary,
+            extension_type: ExtensionType.SWITCHBOARD
+        );
+    }
+
     public async void install () {
         //TODO
     }
