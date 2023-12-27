@@ -1,0 +1,7 @@
+data/io.github.leolost2605.extension-manager.desktop.in
+data/io.github.leolost2605.extension-manager.appdata.xml.in
+src/Application.vala
+src/CategoryRow.vala
+src/Window.vala
+src/Core/Extension.vala
+src/Core/ExtensionManager.vala

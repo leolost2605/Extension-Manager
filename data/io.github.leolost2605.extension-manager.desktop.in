@@ -2,10 +2,10 @@
 Version=1.0
 Type=Application
 
-Name=MyApp
+Name=Extension Manager
 Comment=A catchy tagline
 Categories=Education;ComputerScience;
 
-Icon=io.github.myteam.myapp
-Exec=io.github.myteam.myapp
+Icon=io.github.leolost2605.extension-manager
+Exec=io.github.leolost2605.extension-manager
 Terminal=false

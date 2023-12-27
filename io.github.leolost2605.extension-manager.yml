@@ -1,5 +1,5 @@
 # This is the same ID that you've used in meson.build and other files
-app-id: io.github.myteam.myapp
+app-id: io.github.leolost2605.extension-manager
 
 # Instead of manually specifying a long list of build and runtime dependencies,
 # we can use a convenient pre-made runtime and SDK. For this example, we'll be
@@ -10,7 +10,7 @@ sdk: io.elementary.Sdk
 
 # This should match the exec line in your .desktop file and usually is the same
 # as your app ID
-command: io.github.myteam.myapp
+command: io.github.leolost2605.extension-manager
 
 # ​Here we can specify the kinds of permissions our app needs to run. Since we're
 # not using hardware like webcams, making sound, or reading external files, we
@@ -20,12 +20,28 @@ finish-args:
   - '--share=ipc'
   - '--socket=fallback-x11'
   - '--socket=wayland'
+  - '--system-talk-name=org.freedesktop.PackageKit'
+  - '--system-talk-name=org.freedesktop.Accounts'
+  - '--filesystem=home:ro'
+  - '--filesystem=/etc:ro'
 
 # This section is where you list all the source code required to build your app.
 # If we had external dependencies that weren't included in our SDK, we would list
 # them here.
 modules:
-  - name: myapp
+  - name: libpackagekit-glib2
+    buildsystem: meson
+    sources:
+      - type: archive
+        url: https://github.com/PackageKit/PackageKit/archive/refs/tags/PACKAGEKIT_1_2_4.tar.gz
+        sha256: 4a7b0a41ffa56ad8af67156c46ecb9d4eb439b31a4cb581d959bd5480444954b
+    config-opts:
+      - --buildtype=release
+      - -Dsystemd=false
+      - -Doffline_update=false
+      - -Dbash_completion=false
+
+  - name: io.github.leolost2605.extension-manager
     buildsystem: meson
     sources:
       - type: dir
