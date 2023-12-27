@@ -31,6 +31,18 @@ public class Extension : Object {
         }
     }
 
+    public async void update (Pk.ProgressCallback callback) {
+        var client = new Pk.Client ();
+
+        try {
+            yield client.install_packages_async (Pk.TransactionFlag.NONE, { package.package_id }, null, callback);
+
+            yield reload_package ();
+        } catch (Error e) {
+            warning ("Failed to install %s: %s", package.package_id, e.message);
+        }
+    }
+
     public async void install (Pk.ProgressCallback callback) {
         var client = new Pk.Client ();
 
