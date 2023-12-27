@@ -48,11 +48,11 @@ public class Extension : Object {
 
         try {
             yield client.install_packages_async (Pk.TransactionFlag.NONE, { package.package_id }, null, callback);
-
-            yield reload_package ();
         } catch (Error e) {
             warning ("Failed to install %s: %s", package.package_id, e.message);
         }
+
+        yield reload_package ();
     }
 
     public async void uninstall (Pk.ProgressCallback callback) {
@@ -60,11 +60,11 @@ public class Extension : Object {
 
         try {
             yield client.remove_packages_async (Pk.TransactionFlag.NONE, { package.package_id }, true, true, null, callback);
-
-            yield reload_package ();
         } catch (Error e) {
             warning ("Failed to uninstall %s: %s", package.package_id, e.message);
         }
+
+        yield reload_package ();
     }
 
     private async void reload_package () {
