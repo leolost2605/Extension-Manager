@@ -139,7 +139,6 @@ public class ExtensionManager : Object {
     }
 
     private async void check_repo_list () {
-        warning ("Checking repo list");
         try {
             var result = yield pk_client.get_repo_list_async (Pk.Filter.NONE, null, () => {});
 

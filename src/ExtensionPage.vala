@@ -65,9 +65,10 @@ public class ExtensionPage : Gtk.Box {
         var color_box = new Gtk.Box (VERTICAL, 0);
         color_box.append (top_grid);
 
+        var important_separator = new Gtk.Separator (HORIZONTAL);
+
         var important_label = new Granite.HeaderLabel (_("Important:")) {
             halign = START,
-            margin_top = 12,
             margin_start = 12,
             margin_end = 12
         };
@@ -84,6 +85,7 @@ public class ExtensionPage : Gtk.Box {
         };
 
         important_content_label.bind_property ("visible", important_label, "visible", DEFAULT);
+        important_content_label.bind_property ("visible", important_separator, "visible", DEFAULT);
 
         description_label = new Gtk.Label ("") {
             halign = CENTER,
@@ -113,6 +115,7 @@ public class ExtensionPage : Gtk.Box {
 
         var content_box = new Gtk.Box (VERTICAL, 0);
         content_box.append (color_box);
+        content_box.append (important_separator);
         content_box.append (important_label);
         content_box.append (important_content_label);
         content_box.append (new Gtk.Separator (HORIZONTAL));
