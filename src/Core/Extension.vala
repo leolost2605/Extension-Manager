@@ -7,7 +7,9 @@ public class Extension : Object {
 
     public string name { get; construct; }
     public string summary { get; construct; }
+    public uint64 size { get; construct; }
     public string description { get; construct; }
+    public string changelog { get; construct; }
     public bool installed { get; construct set; }
     public ExtensionType extension_type { get; construct; }
     public Pk.Package package { get; construct set; }
@@ -17,7 +19,9 @@ public class Extension : Object {
             package: package,
             name: package.get_name (),
             summary: package.summary,
+            size: package.size,
             description: package.description,
+            changelog: package.update_changelog,
             installed: INSTALLED in package.info,
             extension_type: extension_type
         );

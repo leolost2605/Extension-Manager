@@ -3,9 +3,11 @@ public class ExtensionPage : Gtk.Box {
 
     private Extension extension;
     private Gtk.Label name_label;
-    private Gtk.Label title_label;
+    private Granite.HeaderLabel title_label;
     private Gtk.Label summary_label;
+    private Gtk.Label size_label;
     private Gtk.Label description_label;
+    private Gtk.Label whats_new_content_label;
     private Gtk.Button install_button;
 
     construct {
@@ -23,8 +25,7 @@ public class ExtensionPage : Gtk.Box {
             margin_top = 3
         };
 
-        title_label = new Gtk.Label ("") {
-            xalign = 0,
+        title_label = new Granite.HeaderLabel ("") {
             hexpand = true
         };
         title_label.add_css_class (Granite.STYLE_CLASS_H2_LABEL);
@@ -39,6 +40,11 @@ public class ExtensionPage : Gtk.Box {
             width_request = 86
         };
 
+        size_label = new Gtk.Label ("") {
+            valign = CENTER,
+            halign = CENTER,
+        };
+
         var top_grid = new Gtk.Grid () {
             row_spacing = 3,
             column_spacing = 3,
@@ -50,11 +56,30 @@ public class ExtensionPage : Gtk.Box {
         top_grid.attach (title_label, 0, 0);
         top_grid.attach (summary_label, 0, 1);
         top_grid.attach (install_button, 1, 0);
+        top_grid.attach (size_label, 1, 1);
 
         var color_box = new Gtk.Box (VERTICAL, 0);
         color_box.append (top_grid);
 
         description_label = new Gtk.Label ("") {
+            halign = CENTER,
+            margin_top = 12,
+            margin_bottom = 12,
+            margin_start = 12,
+            margin_end = 12,
+            wrap = true
+        };
+
+        var whats_new_label = new Granite.HeaderLabel (_("What's New:")) {
+            halign = START,
+            margin_top = 12,
+            margin_bottom = 12,
+            margin_start = 12,
+            margin_end = 12
+        };
+        whats_new_label.add_css_class (Granite.STYLE_CLASS_H3_LABEL);
+
+        whats_new_content_label = new Gtk.Label ("") {
             halign = CENTER,
             margin_top = 12,
             margin_bottom = 12,
@@ -67,6 +92,8 @@ public class ExtensionPage : Gtk.Box {
         append (new Gtk.Separator (HORIZONTAL));
         append (color_box);
         append (description_label);
+        append (whats_new_label);
+        append (whats_new_content_label);
 
         back_button.clicked.connect (() => back ());
 
@@ -83,7 +110,9 @@ public class ExtensionPage : Gtk.Box {
         name_label.label = extension.name;
         title_label.label = extension.name;
         summary_label.label = extension.summary;
+        size_label.label = GLib.format_size (extension.size);
         description_label.label = extension.description != null && extension.description.strip () != "" ? extension.description : _("No description provided");
+        whats_new_content_label.label = extension.changelog;
 
         extension.notify["installed"].connect (check_install_button_label);
         check_install_button_label ();

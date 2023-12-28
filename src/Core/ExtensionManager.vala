@@ -42,8 +42,21 @@ public class ExtensionManager : Object {
 
             progress (_("Getting Extensions…"));
             var result = yield pk_client.search_names_async (Pk.Filter.NONE, known_extensions.get_keys_as_array (), null, () => {});
+            var sack = result.get_package_sack ();
 
-            foreach (var package in result.get_package_array ()) {
+            try {
+                yield sack.get_details_async (null, () => {});
+            } catch (Error e) {
+                warning ("Failed to get package details: %s", e.message);
+            }
+
+            try {
+                yield sack.get_update_detail_async (null, () => {});
+            } catch (Error e) {
+                warning ("Failed to get package update details: %s", e.message);
+            }
+
+            foreach (var package in sack.get_array ()) {
                 if (package.get_name () in known_extensions) {
                     extensions.append (new Extension (package, known_extensions[package.get_name ()]));
                 }
