@@ -13,12 +13,19 @@ public class ExtensionManager : Object {
     public signal void progress (string? label);
 
     public ListStore extensions { get; construct; }
+    public bool ppa_available { get; private set; }
 
     private Pk.Client pk_client;
+    private Pk.Control control;
 
     construct {
         extensions = new ListStore (typeof (Extension));
         pk_client = new Pk.Client ();
+        control = new Pk.Control ();
+
+        //For some reason repo_list_changed doesn't get emitted
+        control.updates_changed.connect (() => check_repo_list.begin ());
+        check_repo_list.begin ();
     }
 
     public async void load_extensions () {
@@ -101,7 +108,7 @@ public class ExtensionManager : Object {
         return (string) contents;
     }
 
-    public HashTable<string, Extension>? load_known_extensions (string contents) {
+    private HashTable<string, Extension>? load_known_extensions (string contents) {
         var key_file = new KeyFile ();
 
         try {
@@ -129,5 +136,22 @@ public class ExtensionManager : Object {
         }
 
         return result;
+    }
+
+    private async void check_repo_list () {
+        warning ("Checking repo list");
+        try {
+            var result = yield pk_client.get_repo_list_async (Pk.Filter.NONE, null, () => {});
+
+            ppa_available = false;
+            foreach (var repo in result.get_repo_detail_array ()) {
+                if ("leolost" in repo.repo_id && "extensions" in repo.repo_id) {
+                    ppa_available = true;
+                    break;
+                }
+            }
+        } catch (Error e) {
+            warning ("Failed to check repolist: %s", e.message);
+        }
     }
 }

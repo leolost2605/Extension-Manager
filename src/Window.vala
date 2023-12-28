@@ -90,12 +90,27 @@ public class Window : Gtk.ApplicationWindow {
             visible = false
         };
 
+        var welcome_view = new WelcomeView ();
+
         var stack = new Gtk.Stack ();
-        stack.add_child (new WelcomeView ());
+        stack.add_child (welcome_view);
         stack.add_child (overlay);
 
         titlebar = header_bar;
         child = stack;
+
+        extension_manager.notify["ppa-available"].connect (() => {
+            if (extension_manager.ppa_available) {
+                stack.visible_child = overlay;
+            } else {
+                stack.visible_child = welcome_view;
+            }
+        });
+        if (extension_manager.ppa_available) {
+            stack.visible_child = overlay;
+        } else {
+            stack.visible_child = welcome_view;
+        }
 
         type_list_box.row_activated.connect ((row) => {
             current_type = ((ExtensionTypeRow)row).extension_type;
