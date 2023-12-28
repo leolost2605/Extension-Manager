@@ -90,8 +90,12 @@ public class Window : Gtk.ApplicationWindow {
             visible = false
         };
 
+        var stack = new Gtk.Stack ();
+        stack.add_child (new WelcomeView ());
+        stack.add_child (overlay);
+
         titlebar = header_bar;
-        child = overlay;
+        child = stack;
 
         type_list_box.row_activated.connect ((row) => {
             current_type = ((ExtensionTypeRow)row).extension_type;

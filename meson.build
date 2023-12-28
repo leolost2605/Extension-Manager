@@ -14,6 +14,7 @@ executable(
     'src' / 'CategoryRow.vala',
     'src' / 'ExtensionPage.vala',
     'src' / 'ExtensionRow.vala',
+    'src' / 'WelcomeView.vala',
     'src' / 'Window.vala',
     'src' / 'Core' / 'Extension.vala',
     'src' / 'Core' / 'ExtensionManager.vala',
