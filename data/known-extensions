@@ -6,3 +6,10 @@ TYPE=0
 
 [com.github.lenemter.wingpanel-indicator-namarupa]
 TYPE=2
+COMMENT="You need to add Pantheon to the list of desktops allowed to work with indicators:
+
+    Open Terminal and run the following commands:
+
+mkdir -p ~/.config/autostart
+cp /etc/xdg/autostart/indicator-application.desktop ~/.config/autostart/
+sed -i 's/^OnlyShowIn.*/OnlyShowIn=Unity;GNOME;Pantheon;/' ~/.config/autostart/indicator-application.desktop"
