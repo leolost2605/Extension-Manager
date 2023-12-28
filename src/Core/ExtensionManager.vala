@@ -145,6 +145,8 @@ public class ExtensionManager : Object {
 
             ppa_available = false;
             foreach (var repo in result.get_repo_detail_array ()) {
+                //A bit lazy matching but should be good enough
+                //The repo_id is long and (I think) might be inconsistent across devices
                 if ("leolost" in repo.repo_id && "extensions" in repo.repo_id) {
                     ppa_available = true;
                     break;
