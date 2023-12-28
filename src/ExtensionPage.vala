@@ -111,16 +111,24 @@ public class ExtensionPage : Gtk.Box {
             margin_end = 12
         };
 
+        var content_box = new Gtk.Box (VERTICAL, 0);
+        content_box.append (color_box);
+        content_box.append (important_label);
+        content_box.append (important_content_label);
+        content_box.append (new Gtk.Separator (HORIZONTAL));
+        content_box.append (description_label);
+        content_box.append (whats_new_label);
+        content_box.append (whats_new_content_label);
+
+        var scrolled_window = new Gtk.ScrolledWindow () {
+            child = content_box,
+            vexpand = true
+        };
+
         orientation = VERTICAL;
         append (top_box);
         append (new Gtk.Separator (HORIZONTAL));
-        append (color_box);
-        append (important_label);
-        append (important_content_label);
-        append (new Gtk.Separator (HORIZONTAL));
-        append (description_label);
-        append (whats_new_label);
-        append (whats_new_content_label);
+        append (scrolled_window);
 
         back_button.clicked.connect (() => back ());
 
