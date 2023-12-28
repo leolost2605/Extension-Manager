@@ -10,8 +10,8 @@ i18n.merge_file(
 
 #Translate and install our .metainfo file
 i18n.merge_file(
-    input: meson.project_name() + '.appdata.xml.in',
-    output: meson.project_name() + '.appdata.xml',
+    input: meson.project_name() + '.metainfo.xml.in',
+    output: meson.project_name() + '.metainfo.xml',
     po_dir: meson.source_root() / 'po',
     install: true,
     install_dir: get_option('datadir') / 'metainfo'
