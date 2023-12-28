@@ -6,25 +6,31 @@ public class Extension : Object {
     }
 
     public string name { get; construct; }
-    public string summary { get; construct; }
-    public uint64 size { get; construct; }
-    public string description { get; construct; }
-    public string changelog { get; construct; }
-    public bool installed { get; construct set; }
     public ExtensionType extension_type { get; construct; }
-    public Pk.Package package { get; construct set; }
+    public string? comment { get; construct; }
 
-    public Extension (Pk.Package package, ExtensionType extension_type) {
+    public string summary { get; private set; }
+    public uint64 size { get; private set; }
+    public string description { get; private set; }
+    public string changelog { get; private set; }
+    public bool installed { get; private set; }
+    public Pk.Package package { get; private set; }
+
+    public Extension (string name, ExtensionType extension_type, string? comment) {
         Object (
-            package: package,
-            name: package.get_name (),
-            summary: package.summary,
-            size: package.size,
-            description: package.description,
-            changelog: package.update_changelog,
-            installed: INSTALLED in package.info,
-            extension_type: extension_type
+            name: name,
+            extension_type: extension_type,
+            comment: comment
         );
+    }
+
+    public void set_package_detailed (Pk.Package package) {
+        this.package = package;
+        summary = package.summary;
+        size = package.size;
+        description = package.description;
+        changelog = package.update_changelog;
+        installed = INSTALLED in package.info;
     }
 
     public void toggle_install (Pk.ProgressCallback callback) {

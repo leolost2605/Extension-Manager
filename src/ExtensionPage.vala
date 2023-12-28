@@ -6,6 +6,7 @@ public class ExtensionPage : Gtk.Box {
     private Granite.HeaderLabel title_label;
     private Gtk.Label summary_label;
     private Gtk.Label size_label;
+    private Gtk.Label important_content_label;
     private Gtk.Label description_label;
     private Gtk.Label whats_new_content_label;
     private Gtk.Button install_button;
@@ -29,9 +30,12 @@ public class ExtensionPage : Gtk.Box {
             hexpand = true
         };
         title_label.add_css_class (Granite.STYLE_CLASS_H2_LABEL);
+        var title_label_label = (Gtk.Label) title_label.get_first_child ();
+        title_label_label.ellipsize = MIDDLE;
 
         summary_label = new Gtk.Label ("") {
-            xalign = 0
+            xalign = 0,
+            wrap = true
         };
 
         install_button = new Gtk.Button.with_label (_("Install")) {
@@ -60,6 +64,26 @@ public class ExtensionPage : Gtk.Box {
 
         var color_box = new Gtk.Box (VERTICAL, 0);
         color_box.append (top_grid);
+
+        var important_label = new Granite.HeaderLabel (_("Important:")) {
+            halign = START,
+            margin_top = 12,
+            margin_start = 12,
+            margin_end = 12
+        };
+        important_label.add_css_class (Granite.STYLE_CLASS_H3_LABEL);
+
+        important_content_label = new Gtk.Label ("") {
+            halign = CENTER,
+            margin_top = 12,
+            margin_bottom = 12,
+            margin_start = 12,
+            margin_end = 12,
+            wrap = true,
+            selectable = true
+        };
+
+        important_content_label.bind_property ("visible", important_label, "visible", DEFAULT);
 
         description_label = new Gtk.Label ("") {
             halign = CENTER,
@@ -91,6 +115,9 @@ public class ExtensionPage : Gtk.Box {
         append (top_box);
         append (new Gtk.Separator (HORIZONTAL));
         append (color_box);
+        append (important_label);
+        append (important_content_label);
+        append (new Gtk.Separator (HORIZONTAL));
         append (description_label);
         append (whats_new_label);
         append (whats_new_content_label);
@@ -111,6 +138,8 @@ public class ExtensionPage : Gtk.Box {
         title_label.label = extension.name;
         summary_label.label = extension.summary;
         size_label.label = GLib.format_size (extension.size);
+        important_content_label.label = extension.comment ?? "";
+        important_content_label.visible = extension.comment != null;
         description_label.label = extension.description != null && extension.description.strip () != "" ? extension.description : _("No description provided");
         whats_new_content_label.label = extension.changelog;
 

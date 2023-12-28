@@ -4,7 +4,8 @@ public class ExtensionManager : Object {
         return instance.once (() => {return new ExtensionManager ();});
     }
 
-    private const string KEY_GROUP = "EXTENSIONS";
+    private const string TYPE_KEY = "TYPE";
+    private const string COMMENT_KEY = "COMMENT";
     private const string CACHE_FILE = "KNOWN-EXTENSIONS";
     private const string URL = "https://raw.githubusercontent.com/leolost2605/Extension-Manager/main/data/known-extensions";
 
@@ -58,7 +59,8 @@ public class ExtensionManager : Object {
 
             foreach (var package in sack.get_array ()) {
                 if (package.get_name () in known_extensions) {
-                    extensions.append (new Extension (package, known_extensions[package.get_name ()]));
+                    known_extensions[package.get_name ()].set_package_detailed (package);
+                    extensions.append (known_extensions[package.get_name ()]);
                 }
             }
         } catch (Error e) {
@@ -99,7 +101,7 @@ public class ExtensionManager : Object {
         return (string) contents;
     }
 
-    public HashTable<string, Extension.ExtensionType>? load_known_extensions (string contents) {
+    public HashTable<string, Extension>? load_known_extensions (string contents) {
         var key_file = new KeyFile ();
 
         try {
@@ -109,14 +111,21 @@ public class ExtensionManager : Object {
             return null;
         }
 
-        var result = new HashTable<string, Extension.ExtensionType> (str_hash, str_equal);
+        var result = new HashTable<string, Extension> (str_hash, str_equal);
 
         try {
-            foreach (var key in key_file.get_keys (KEY_GROUP)) {
-                result[key] = (Extension.ExtensionType) key_file.get_integer (KEY_GROUP, key);
+            foreach (var extension in key_file.get_groups ()) {
+                var extension_type = (Extension.ExtensionType) key_file.get_integer (extension, TYPE_KEY);
+
+                string? comment = null;
+                if (key_file.has_key (extension, COMMENT_KEY)) {
+                    comment = key_file.get_string (extension, COMMENT_KEY);
+                }
+
+                result[extension] = new Extension (extension, extension_type, comment);
             }
         } catch (Error e) {
-            critical ("Failed to get key group and keys: %s", e.message);
+            critical ("Failed to get load extensions: %s", e.message);
         }
 
         return result;
