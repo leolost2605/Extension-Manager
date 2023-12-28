@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.leolost2605.extension-manager</id>
+
+  <name>Extension Manager</name>
+  <summary>Manage your extensions with ease</summary>
+
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+
+  <developer_name>Leonhard Kargl</developer_name>
+
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+    <control>touch</control>
+  </supports>
+
+  <description>
+    <p>
+      A quick summary of your app&apos;s main selling points and features. Just a couple sentences per paragraph is best.
+    </p>
+  </description>
+
+  <launchable type="desktop-id">io.github.leolost2605.extension-manager.desktop</launchable>
+
+  <content_rating type="oars-1.1" />
+
+  <screenshots>
+    <screenshot type="default">
+      <caption>The home page of the app</caption>
+      <image>https://github.com/leolost2605/Extension-Manager/blob/2d86fc14ef685538f4cd7d9817deedfa9cbfb34e/data/main_view.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>The list of settings extensions</caption>
+      <image>https://github.com/leolost2605/Extension-Manager/blob/2d86fc14ef685538f4cd7d9817deedfa9cbfb34e/data/list_view.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>The page showing details about an extension</caption>
+      <image>https://github.com/leolost2605/Extension-Manager/blob/2d86fc14ef685538f4cd7d9817deedfa9cbfb34e/data/extension_view.png</image>
+    </screenshot>
+  </screenshots>
+</component>
