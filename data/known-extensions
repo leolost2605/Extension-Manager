@@ -1,4 +1,8 @@
-[EXTENSIONS]
-pantheon-photos=0
-pantheon-tweaks=1
-com.github.lenemter.wingpanel-indicator-namarupa=2
+[pantheon-tweaks]
+TYPE=1
+
+[pantheon-photos]
+TYPE=0
+
+[com.github.lenemter.wingpanel-indicator-namarupa]
+TYPE=2
