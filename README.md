@@ -1,2 +1,2 @@
-# Extension-Manager
+# Extension Manager
 An extension manager for elementary OS

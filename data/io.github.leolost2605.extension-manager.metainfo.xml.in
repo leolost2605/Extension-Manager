@@ -18,7 +18,7 @@
 
   <description>
     <p>
-      A quick summary of your app&apos;s main selling points and features. Just a couple sentences per paragraph is best.
+      Easily install and manage extensions from a curated repository. This app currently supports extensions for the top panel (called indicators), for the settings app and for the window manager.
     </p>
   </description>
 
@@ -40,4 +40,12 @@
       <image>https://github.com/leolost2605/Extension-Manager/blob/2d86fc14ef685538f4cd7d9817deedfa9cbfb34e/data/extension_view.png</image>
     </screenshot>
   </screenshots>
+
+  <releases>
+    <release version="1.0.0" date="2013-12-29">
+      <description>
+        <p>Initial release</p>
+      </description>
+    </release>
+  </releases>
 </component>
