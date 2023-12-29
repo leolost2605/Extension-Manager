@@ -1,6 +1,6 @@
 public class WelcomeView : Adw.Bin {
     construct {
-        var placeholder = new Granite.Placeholder ("Welcome") {
+        var placeholder = new Granite.Placeholder (_("Welcome")) {
             description = _("In ordered for Extension Manager to work, you will need to add an external software source."),
             halign = CENTER,
             valign = CENTER
