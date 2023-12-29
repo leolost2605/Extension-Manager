@@ -141,4 +141,27 @@ public class Window : Gtk.ApplicationWindow {
 
         extension_manager.load_extensions.begin ();
     }
+
+    public static void send_error_message (string title, string description, string? icon_name = null, string? error_details = null) {
+        var dialog = new Granite.MessageDialog (
+            title,
+            description,
+            new ThemedIcon ("dialog-error")
+        ) {
+            modal = true,
+            transient_for = ((Gtk.Application) GLib.Application.get_default ()).active_window
+        };
+
+        if (icon_name != null) {
+            dialog.image_icon = new ThemedIcon (icon_name);
+            dialog.badge_icon = new ThemedIcon ("dialog-error");
+        }
+
+        if (error_details != null) {
+            dialog.show_error_details (error_details);
+        }
+
+        dialog.present ();
+        dialog.response.connect (dialog.destroy);
+    }
 }

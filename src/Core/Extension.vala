@@ -60,6 +60,7 @@ public class Extension : Object {
             yield client.install_packages_async (Pk.TransactionFlag.NONE, { package.package_id }, null, callback);
         } catch (Error e) {
             warning ("Failed to install %s: %s", package.package_id, e.message);
+            Window.send_error_message (_("Error"), _("Failed to install '%s'").printf (name), null, e.message);
         }
 
         yield reload_package ();
@@ -72,6 +73,7 @@ public class Extension : Object {
             yield client.remove_packages_async (Pk.TransactionFlag.NONE, { package.package_id }, true, true, null, callback);
         } catch (Error e) {
             warning ("Failed to uninstall %s: %s", package.package_id, e.message);
+            Window.send_error_message (_("Error"), _("Failed to install '%s'").printf (name), null, e.message);
         }
 
         yield reload_package ();
