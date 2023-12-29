@@ -1,6 +1,9 @@
 [pantheon-tweaks]
 TYPE=1
 
+[switchboard-plug-services]
+TYPE=1
+
 [pantheon-photos]
 TYPE=0
 COMMENT=This is NOT an extension, it's currently for testing only
